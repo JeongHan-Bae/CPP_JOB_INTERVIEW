@@ -18,7 +18,7 @@
 
 <script>
     async function search() {
-        const keywords = document.getElementById('keywords').value;
+        const keywords = document.getElementById('keywords').value.toLowerCase();
         const repoOwner = 'JeongHan-Bae';
         const repoName = 'CPP_JOB_INTERVIEW';
         const branchName = 'main';
@@ -29,20 +29,38 @@
             const response = await fetch(apiUrl);
             const data = await response.json();
 
-            // Filter markdown files
-            const markdownFiles = data.filter(file => file.name.endsWith('.md'));
+            // Filter markdown files based on keywords and tags
+            const matchingFiles = await Promise.all(data.map(async file => {
+                if (file.name.endsWith('.md')) {
+                    const contentUrl = `https://github.com/${repoOwner}/${repoName}/blob/${branchName}/${file.name}`;
+                    const fileContentResponse = await fetch(file.download_url);
+                    const fileContent = await fileContentResponse.text();
+                    const tags = extractTags(fileContent);
 
-            // Search through markdown files
-            const results = markdownFiles.reduce((acc, file) => {
-                const contentUrl = `https://github.com/${repoOwner}/${repoName}/blob/${branchName}/${file.name}`;
-                return acc + `<h3>${file.name}</h3><p>${contentUrl}</p>`; // Customize as needed
+                    // Check if keywords match name or tags
+                    const nameMatch = file.name.toLowerCase().includes(keywords);
+                    const tagMatch = tags.includes(keywords);
+
+                    return (file.type === 'file' && (nameMatch || tagMatch)) ? contentUrl : null;
+                }
+
+                return null;
+            }));
+
+            // Remove null values and generate HTML for matching files
+            const filteredFiles = matchingFiles.filter(file => file !== null);
+            document.getElementById('results').innerHTML = filteredFiles.reduce((acc, file) => {
+                return acc + `<p><a href="${file}" target="_blank">${file}</a></p>`; // Make file names clickable links
             }, '');
-
-            // Display results in the 'results' div
-            document.getElementById('results').innerHTML = results;
         } catch (error) {
             console.error('Error fetching data from GitHub API:', error);
         }
+    }
+
+    // Helper function to extract tags from markdown content
+    function extractTags(content) {
+        const match = content.match(/tags:(.*?)(\r?\n|\r)(---|\n\n|$)/is);
+        return match ? match[1].split(',').map(tag => tag.trim().toLowerCase()) : [];
     }
 </script>
 
