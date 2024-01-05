@@ -41,7 +41,7 @@
                     const nameMatch = file.name.toLowerCase().includes(keywords);
                     const tagMatch = tags.includes(keywords);
 
-                    return (file.type === 'file' && (nameMatch || tagMatch)) ? contentUrl : null;
+                    return (file.type === 'file' && (nameMatch || tagMatch)) ? file.name : null;
                 }
 
                 return null;
@@ -50,7 +50,8 @@
             // Remove null values and generate HTML for matching files
             const filteredFiles = matchingFiles.filter(file => file !== null);
             document.getElementById('results').innerHTML = filteredFiles.reduce((acc, file) => {
-                return acc + `<p><a href="${file}" target="_blank">${file}</a></p>`; // Make file names clickable links
+                const contentUrl = `https://github.com/${repoOwner}/${repoName}/blob/${branchName}/${file}`;
+                return acc + `<p><a href="${contentUrl}" target="_blank">${file}</a></p>`; // Make file names clickable links
             }, '');
         } catch (error) {
             console.error('Error fetching data from GitHub API:', error);
