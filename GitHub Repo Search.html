@@ -21,6 +21,7 @@
         const keywords = document.getElementById('keywords').value;
         const repoOwner = 'JeongHan-Bae';
         const repoName = 'CPP_JOB_INTERVIEW';
+        const branchName = 'main';
 
         const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents`;
 
@@ -33,7 +34,7 @@
 
             // Search through markdown files
             const results = markdownFiles.reduce((acc, file) => {
-                const contentUrl = file.download_url;
+                const contentUrl = `https://github.com/${repoOwner}/${repoName}/blob/${branchName}/${file.name}`;
                 return acc + `<h3>${file.name}</h3><p>${contentUrl}</p>`; // Customize as needed
             }, '');
 
