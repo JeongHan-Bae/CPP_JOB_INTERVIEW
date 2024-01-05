@@ -1,9 +1,9 @@
 tags: include, format
 ---
 
-# Difference between `< >` and `""` in C++
+# Difference between `<>` and `""` in C++
 
-In C++, the use of `< >` and `""` has distinct purposes.
+In C++, the use of `< >` and `" "` has distinct purposes.
 
 ## Angle Brackets `< >`
 
@@ -16,7 +16,7 @@ Example:
 
 This syntax is commonly used for standard C++ library headers.
 
-## Double Quotes `""`
+## Double Quotes `" "`
 
 Double quotes are used for including your own header files or files in the same directory.
 
