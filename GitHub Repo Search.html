@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Repo Search</title>
+</head>
+<body>
+<h1>GitHub Repo Search</h1>
+
+<form id="searchForm">
+    <label for="keywords">Enter Keywords:</label>
+    <input type="text" id="keywords" name="keywords" required>
+    <button type="button" onclick="search()">Search</button>
+</form>
+
+<div id="results"></div>
+
+<script>
+    async function search() {
+        const keywords = document.getElementById('keywords').value;
+        const repoOwner = 'JeongHan-Bae';
+        const repoName = 'CPP_JOB_INTERVIEW';
+
+        const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents`;
+
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+
+            // Filter markdown files
+            const markdownFiles = data.filter(file => file.name.endsWith('.md'));
+
+            // Search through markdown files
+            const results = markdownFiles.reduce((acc, file) => {
+                const contentUrl = file.download_url;
+                return acc + `<h3>${file.name}</h3><p>${contentUrl}</p>`; // Customize as needed
+            }, '');
+
+            // Display results in the 'results' div
+            document.getElementById('results').innerHTML = results;
+        } catch (error) {
+            console.error('Error fetching data from GitHub API:', error);
+        }
+    }
+</script>
+
+</body>
+</html>
