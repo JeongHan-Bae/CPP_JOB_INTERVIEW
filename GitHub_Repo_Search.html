@@ -4,17 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub Repo Search</title>
+    <style>
+        body{
+            background-color: #0D1117;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .content{
+            width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+            border-radius: 10px;
+            height: 500px;
+            overflow: hidden;
+        }
+        h1{
+            font-size: 50px;
+            margin-top: 30px;
+            color: white;
+        }
+        label{
+            font-size: 30px;
+            color: white;
+        }
+
+        .key{
+            color: orange;
+        }
+        #keywords{
+            border-radius: 4px;
+            height: 24px;
+            width: 150px;
+            border-color: black;
+            margin-top: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+        }
+        button{
+            margin-top: 20px;
+            width: 80px;
+            height: 30px;
+            border-radius: 5px;
+            color: white;
+            background-color: #424c5b;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bolder;
+        }
+        a{
+            color: rgb(24, 106, 229);
+        }
+        a:visited{
+            color: rgb(238, 238, 183);
+        }
+        .results{
+            color: white;
+            font-size: 25px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-<h1>GitHub Repo Search</h1>
-
-<form id="searchForm">
-    <label for="keywords">Enter Keywords:</label>
-    <input type="text" id="keywords" name="keywords" required>
-    <button type="button" onclick="search()">Search</button>
-</form>
-
-<div id="results"></div>
+ <div class="content">   
+    <h1>GitHub Repo Search</h1>
+    <form id="searchForm">
+        <label for="keywords">Enter a <span class="key">Keyword</span>:</label><br>
+        <input type="text" id="keywords" name="keywords" >
+        <button type="button" onclick="search()">Search</button>
+    </form>
+    <div class="results">Results:</div>
+    <div id="results"></div>
+</div>
 
 <script>
     async function search() {
