@@ -34,7 +34,7 @@ In C++, the concepts of `const pointer` and `pointer const` involve the use of t
 
 A `const pointer` in C++ means that the pointer itself is constant and cannot be reassigned to point to a different memory location. However, the data at the memory location the pointer is pointing to can be modified.
 
-Example:
+#### Example:
 ```cpp
 int value = 42;
 const int *ptr = &value;
@@ -52,7 +52,7 @@ In this example, `ptr` is a constant pointer to an integer. It cannot be changed
 
 On the other hand, a `pointer const` in C++ means that the data the pointer is pointing to is constant and cannot be modified. However, the pointer itself can be reassigned to point to a different memory location.
 
-Example:
+#### Example:
 ```cpp
 int value = 42;
 int *const ptr = &value;
