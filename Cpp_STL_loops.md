@@ -152,7 +152,7 @@ Overall, the different realizations of `std::for_each` cater to a wide range of 
 
 ---
 
-## `std::find`, `std::find_if`, `std::find_if_not` (Introduced in C++98 or C++11)
+## `std::find`, `std::find_if`, `std::find_if_not`, `std::find_end` (Introduced in C++98 or C++11)
 
 ### `std::find` (Introduced in C++98)
 
@@ -197,8 +197,39 @@ The `std::find_if_not` algorithm, found in the `<algorithm>` header, searches fo
 
 std::vector<int> vec = {1, 2, 3, 4, 5};
 auto it = std::find_if_not(vec.begin(), vec.end(), [](int n) { return n % 2 != 0; });
-
 ```
+
+## `std::find_end` (Introduced in C++98)
+
+The `std::find_end` algorithm, found in the `<algorithm>` header, searches for the last occurrence of a subsequence within a range.
+
+### Details:
+
+In C++98, `std::find_end` searches for the last occurrence of the sequence defined by the iterators `[s_first, s_last)` within the range `[first, last)`.
+
+### Example Usage (C++98):
+
+```cpp
+#include <algorithm>
+#include <vector>
+
+std::vector<int> main_sequence = {1, 2, 3, 4, 5, 1, 2, 3, 4, 5};
+std::vector<int> sub_sequence = {1, 2, 3};
+
+// Search for the last occurrence of the subsequence within the main sequence
+auto it = std::find_end(main_sequence.begin(), main_sequence.end(), sub_sequence.begin(), sub_sequence.end());
+
+// Check if the subsequence was found
+if (it != main_sequence.end()) {
+    // Found the last occurrence of the subsequence
+    // 'it' points to the beginning of the last occurrence
+    // Perform further actions as needed
+}
+```
+
+### Note:
+
+`std::find_end` is particularly useful when you need to locate the last occurrence of a subsequence within a larger sequence. It provides flexibility in searching for patterns within data and can be handy in various applications such as text processing and pattern recognition.
 
 ---
 
