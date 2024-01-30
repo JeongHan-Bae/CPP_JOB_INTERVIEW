@@ -948,3 +948,407 @@ However, they differ in their implementations, features, and performance charact
   - Users are comfortable managing memory and resizing operations explicitly.
 
 Both `std::stack` and `std::vector` offer LIFO behavior, but the choice depends on the specific requirements, performance considerations, and ease of use within the context of the application.
+
+-----
+
+# `<unordered_map>` and `<unordered_set>`
+
+## `std::unordered_map` and `std::unordered_set` Containers
+
+The `std::unordered_map` and `std::unordered_set` containers are part of the C++ Standard Library and provide implementations of hash tables for efficient storage and retrieval of elements. They are commonly used when rapid access to elements based on keys or values is required. While `std::unordered_map` stores key-value pairs with unique keys, `std::unordered_set` stores unique elements without any associated values.
+
+### Initialization Behavior:
+
+- **Default Initialization:** When default-initialized, both `std::unordered_map` and `std::unordered_set` are empty containers with no elements.
+  
+- **Initialization with Buckets:** You can initialize `std::unordered_map` and `std::unordered_set` with a specific number of initial buckets to optimize memory usage and reduce the number of rehashes.
+
+### Example:
+
+```cpp
+#include <unordered_map>
+#include <unordered_set>
+
+// Default initialization
+std::unordered_map<int, std::string> myMap; // Empty unordered_map
+std::unordered_set<int> mySet; // Empty unordered_set
+
+// Initialization with specific number of buckets
+std::unordered_map<int, std::string> myMapWithBuckets(10); // unordered_map with 10 initial buckets
+std::unordered_set<int> mySetWithBuckets(20); // unordered_set with 20 initial buckets
+```
+
+### Insertion in `std::unordered_map` and `std::unordered_set`
+
+Inserting elements into `std::unordered_map` and `std::unordered_set` can be done efficiently using the `insert()` function or the `emplace()` function for individual elements.
+
+#### Inserting into `std::unordered_map`:
+
+```cpp
+std::unordered_map<int, std::string> myMap;
+
+// Inserting key-value pairs into unordered_map
+myMap.insert({1, "first"});
+myMap.emplace(2, "second");
+```
+
+#### Inserting into `std::unordered_set`:
+
+```cpp
+std::unordered_set<std::string> mySet;
+
+// Inserting elements into unordered_set
+mySet.insert("first");
+mySet.emplace("second");
+```
+
+### Time Complexity Analysis:
+- Both `insert()` and `emplace()` operations have an average time complexity of `O(1)` for insertion into `std::unordered_map` and `std::unordered_set`.
+- However, in cases where rehashing is required due to increased load factor, the complexity can become `O(n)`, where `n` is the number of elements in the container.
+
+### Space Complexity Analysis:
+- The space complexity of inserting elements into `std::unordered_map` and `std::unordered_set` is proportional to the number of elements inserted, with no additional overhead beyond the container itself.
+
+### Deletion in `std::unordered_map` and `std::unordered_set`
+
+Deleting elements from `std::unordered_map` and `std::unordered_set` can be efficiently done using the `erase()` function.
+
+#### Deleting from `std::unordered_map`:
+
+```cpp
+std::unordered_map<int, std::string> myMap = {{1, "first"}, {2, "second"}};
+
+// Deleting elements from unordered_map
+myMap.erase(1); // Deletes the element with key 1
+```
+
+#### Deleting from `std::unordered_set`:
+
+```cpp
+std::unordered_set<std::string> mySet = {"first", "second"};
+
+// Deleting elements from unordered_set
+mySet.erase("first"); // Deletes the element "first"
+```
+
+### Time Complexity Analysis:
+- The `erase()` operation for both `std::unordered_map` and `std::unordered_set` has an average time complexity of `O(1)` for deletion.
+- In cases where rehashing is required due to decreased load factor, the complexity can become `O(n)`, where `n` is the number of elements in the container.
+
+### Space Complexity Analysis:
+- The space complexity of deleting elements from `std::unordered_map` and `std::unordered_set` is `O(1)` as it does not involve additional memory overhead beyond the container itself.
+
+### Modification in `std::unordered_map` and `std::unordered_set`
+
+Modifying elements in `std::unordered_map` involves updating the value associated with a specific key, while in `std::unordered_set`, it involves removing the existing element and inserting a new one with the updated value.
+
+#### Modifying `std::unordered_map`:
+
+```cpp
+std::unordered_map<int, std::string> myMap = {{1, "first"}, {2, "second"}};
+
+// Modifying value associated with key 2
+myMap[2] = "new value"; // Update value associated with key 2
+```
+
+#### Modifying `std::unordered_set`:
+
+```cpp
+std::unordered_set<std::string> mySet = {"first", "second"};
+
+// Modifying element in unordered_set
+mySet.erase("first"); // Remove existing element
+mySet.insert("new value"); // Insert new element with updated value
+```
+
+### Time Complexity Analysis:
+- Modifying elements in `std::unordered_map` and `std::unordered_set` has an average time complexity of `O(1)`.
+
+### Space Complexity Analysis:
+- The space complexity of modifying elements in `std::unordered_map` and `std::unordered_set` is `O(1)` as it does not involve additional memory overhead beyond the container itself.
+
+### Searching in `std::unordered_map` and `std::unordered_set`
+
+Searching for elements in `std::unordered_map` and `std::unordered_set` can be efficiently performed using the `find()` function.
+
+#### Searching in `std::unordered_map`:
+
+```cpp
+std::unordered_map<int, std::string> myMap = {{1, "first"}, {2, "second"}};
+
+// Searching for key 2 in unordered_map
+auto iter = myMap.find(2);
+if (iter != myMap.end()) {
+    std::cout << "Key 2 found, associated value: " << iter->second << std::endl;
+} else {
+    std::cout << "Key 2 not found" << std::endl;
+}
+```
+
+#### Searching in `std::unordered_set`:
+
+```cpp
+std::unordered_set<std::string> mySet = {"first", "second"};
+
+// Searching for element "second" in unordered_set
+auto iter = mySet.find("second");
+if (iter != mySet.end()) {
+    std::cout << "Element 'second' found" << std::endl;
+} else {
+    std::cout << "Element 'second' not found" << std::endl;
+}
+```
+
+### Time Complexity Analysis:
+- The `find()` operation for both `std::unordered_map` and `std::unordered_set` has an average time complexity of `O(1)` for searching.
+
+### Space Complexity Analysis:
+- Searching in `std::unordered_map` and `std::unordered_set` does not incur any additional space overhead beyond the container itself. The space complexity remains constant, denoted as `O(1)`.
+
+### Conclusion:
+
+- **Use `std::unordered_map` when:** Storing key-value pairs where rapid access to elements based on keys is required, and the order of elements is not significant.
+- **Use `std::unordered_set` when:** Storing unique elements where rapid access and membership testing are essential, and the order of elements is not significant.
+- Both containers offer efficient insertion, deletion, modification, and searching operations with average constant-time complexity, making them suitable for various applications where hash-based data structures are needed.
+- However, keep in mind that hash-based containers may have slightly higher memory overhead compared to ordered containers like `std::map` or `std::set`.
+
+## Comparing `std::unordered_map`/ `std::unordered_set` and `std::vector<std::pair<T1, T2>>` / `std::vector<T>`
+
+When deciding between `std::unordered_map`/`std::unordered_set` and `std::vector<std::pair<T1, T2>>`/`std::vector<T>`, it's essential to consider factors like efficiency, memory usage, and the nature of the data being stored.
+
+### Lookup and Insertion Time:
+
+- **`std::unordered_map` and `std::unordered_set`:** Offer constant-time complexity `O(1)` for average-case lookup and insertion operations, leveraging hash functions for efficient access.
+- **`std::vector<std::pair<T1, T2>>` and `std::vector<T>`:** Require linear-time complexity `O(n)` for searching and insertion, with potential resizing overhead.
+
+### Memory Overhead:
+
+- **`std::unordered_map` and `std::unordered_set`:** May incur more memory overhead due to hash tables and buckets, but offer efficient access and management of elements.
+- **`std::vector<std::pair<T1, T2>>` and `std::vector<T>`:** Generally have lower memory overhead, but may become inefficient for large datasets due to linear search.
+
+### Ordering:
+
+- **`std::unordered_map` and `std::unordered_set`:** Do not maintain any specific ordering of elements, organizing them based on hash functions for rapid access.
+- **`std::vector<std::pair<T1, T2>>` and `std::vector<T>`:** Maintain the order of elements as they are inserted, providing sequential access.
+
+### Use Cases:
+
+- **`std::unordered_map` and `std::unordered_set`:** Ideal for scenarios requiring rapid access to elements based on keys or values, without the need for maintaining order.
+- **`std::vector<std::pair<T1, T2>>` and `std::vector<T>`:** Suitable when sequential access to elements or minimizing memory overhead is important, albeit at the expense of lookup performance.
+
+### Conclusion:
+
+- **Use `std::unordered_map` and `std::unordered_set` when:** Swift access to elements based on keys or values is essential, and the order of elements is not significant.
+- **Use `std::vector<std::pair<T1, T2>>` and `std::vector<T>` when:** Maintaining the order of elements or minimizing memory overhead is important, at the expense of lookup performance.
+
+-----
+
+# `<map>` and `<set>`
+
+## `std::map` and `std::set` Containers
+
+The `std::map` and `std::set` containers are part of the C++ Standard Library and provide implementations of balanced binary search trees (usually red-black trees) for efficient storage and retrieval of elements. They are commonly used when elements need to be ordered and when rapid access to elements based on keys or values is required. While `std::map` stores key-value pairs with unique keys sorted by keys, `std::set` stores unique elements sorted by values without any associated values.
+
+### Initialization Behavior:
+
+- **Default Initialization:** When default-initialized, both `std::map` and `std::set` are empty containers with no elements.
+  
+- **Initialization with Comparator:** You can initialize `std::map` and `std::set` with a specific comparison function or object to customize the ordering of elements.
+
+### Example:
+
+```cpp
+#include <map>
+#include <set>
+
+// Default initialization
+std::map<int, std::string> myMap; // Empty map
+std::set<int> mySet; // Empty set
+
+// Initialization with custom comparison function
+auto cmp = [](int a, int b) { return a > b; }; // Custom comparison function
+std::map<int, std::string, decltype(cmp)> myCustomMap(cmp); // Map with custom comparison
+```
+
+### Insertion in `std::map` and `std::set`
+
+Inserting elements into `std::map` and `std::set` can be done efficiently using the `insert()` function or the `emplace()` function for individual elements.
+
+#### Inserting into `std::map`:
+
+```cpp
+std::map<int, std::string> myMap;
+
+// Inserting key-value pairs into map
+myMap.insert({1, "first"});
+myMap.emplace(2, "second");
+```
+
+#### Inserting into `std::set`:
+
+```cpp
+std::set<int> mySet;
+
+// Inserting elements into set
+mySet.insert(1);
+mySet.emplace(2);
+```
+
+### Time Complexity Analysis:
+- Both `insert()` and `emplace()` operations have an average time complexity of `O(log n)` for insertion into `std::map` and `std::set`.
+- The logarithmic complexity arises from the balanced binary search tree structure, ensuring efficient insertion while maintaining order.
+
+### Space Complexity Analysis:
+- The space complexity of inserting elements into `std::map` and `std::set` is proportional to the number of elements inserted, with no additional overhead beyond the container itself.
+
+### Deletion in `std::map` and `std::set`
+
+Deleting elements from `std::map` and `std::set` can be efficiently done using the `erase()` function.
+
+#### Deleting from `std::map`:
+
+```cpp
+std::map<int, std::string> myMap = {{1, "first"}, {2, "second"}};
+
+// Deleting elements from map
+myMap.erase(1); // Deletes the element with key 1
+```
+
+#### Deleting from `std::set`:
+
+```cpp
+std::set<int> mySet = {1, 2, 3};
+
+// Deleting elements from set
+mySet.erase(1); // Deletes the element 1
+```
+
+### Time Complexity Analysis:
+- The `erase()` operation for both `std::map` and `std::set` has an average time complexity of `O(log n)` for deletion.
+- The logarithmic complexity arises from the balanced binary search tree structure, ensuring efficient deletion while maintaining order.
+
+### Space Complexity Analysis:
+- The space complexity of deleting elements from `std::map` and `std::set` is `O(1)` as it does not involve additional memory overhead beyond the container itself.
+
+### Modification in `std::map` and `std::set`
+
+Modifying elements in `std::map` involves updating the value associated with a specific key, while in `std::set`, it involves removing the existing element and inserting a new one.
+
+#### Modifying `std::map`:
+
+```cpp
+std::map<int, std::string> myMap = {{1, "first"}, {2, "second"}};
+
+// Modifying value associated with key 2
+myMap[2] = "new value"; // Update value associated with key 2
+```
+
+#### Modifying `std::set`:
+
+```cpp
+std::set<int> mySet = {1, 2, 3};
+
+// Modifying element in set
+mySet.erase(1); // Remove existing element
+mySet.insert(4); // Insert new element
+```
+
+### Time Complexity Analysis:
+- Modifying elements in `std::map` and `std::set` has an average time complexity of `O(log n)`.
+
+### Space Complexity Analysis:
+- The space complexity of modifying elements in `std::map` and `std::set` is `O(1)` as it does not involve additional memory overhead beyond the container itself.
+
+### Searching in `std::map` and `std::set`
+
+Searching for elements in `std::map` and `std::set` can be efficiently performed using the `find()` function.
+
+#### Searching in `std::map`:
+
+```cpp
+std::map<int, std::string> myMap = {{1, "first"}, {2, "second"}};
+
+// Searching for key 2 in map
+auto iter = myMap.find(2);
+if (iter != myMap.end()) {
+    std::cout << "Key 2 found, associated value: " << iter->second << std::endl;
+} else {
+    std::cout << "Key 2 not found" << std::endl;
+}
+```
+
+#### Searching in `std::set`:
+
+```cpp
+std::set<int> mySet = {1, 2, 3};
+
+// Searching for element 2 in set
+auto iter = mySet.find(2);
+if (iter != mySet.end()) {
+    std::cout << "Element 2 found" << std::endl;
+} else {
+    std::cout << "Element 2 not found" << std::endl;
+}
+```
+
+### Time Complexity Analysis:
+- The `find()` operation for both `std::map` and `std::set` has an average time complexity of `O(log n)` for searching.
+
+### Space Complexity Analysis:
+- Searching in `std::map` and `std::set` does not incur any additional space overhead beyond the container itself. The space complexity remains constant, denoted as `O(1)`.
+
+### Conclusion:
+
+- **Use `std::map` when:** Storing key-value pairs where elements need to be ordered by keys and rapid access to elements based on keys is required.
+- **Use `std::set` when:** Storing unique elements where elements need to be ordered by values and rapid access and membership testing are essential.
+- Both containers offer efficient insertion, deletion, modification, and searching operations with average logarithmic time complexity, making them suitable for various applications where ordered data structures are needed.
+
+## Comparing `std::map`/ `std::set` and their Hash-Based Counterparts
+
+### Performance and Complexity:
+
+- **`std::map` and `std::set`:**
+  - Offer average logarithmic time complexity `O(log n)` for insertion, deletion, and searching operations.
+  - Provide ordered storage of elements, maintaining a balanced binary search tree structure.
+  - Suitable for scenarios where elements need to be ordered and rapid access based on keys or values is required.
+
+- **`std::unordered_map` and `std::unordered_set`:**
+  - Offer average constant-time complexity `O(1)` for insertion, deletion, and searching operations.
+  - Do not maintain any specific ordering of elements, organizing them based on hash functions for rapid access.
+  - Ideal for scenarios where rapid access to elements based on keys or values is essential, and the order of elements is not significant.
+
+### Memory Overhead:
+
+- **`std::map` and `std::set`:**
+  - May have lower memory overhead compared to hash-based counterparts for small to medium-sized datasets due to the balanced binary search tree structure.
+  - Require additional memory for maintaining tree nodes and pointers.
+
+- **`std::unordered_map` and `std::unordered_set`:**
+  - May incur more memory overhead due to hash tables and buckets, especially for large datasets.
+  - Offer efficient access and management of elements but may consume more memory than balanced trees.
+
+### Ordering:
+
+- **`std::map` and `std::set`:**
+  - Maintain the order of elements as they are inserted, providing sequential access.
+  - Suitable when ordered storage and retrieval of elements are required.
+
+- **`std::unordered_map` and `std::unordered_set`:**
+  - Do not maintain any specific ordering of elements, organizing them based on hash functions for rapid access.
+  - Ideal for scenarios where the order of elements is not significant, and rapid access or membership testing is crucial.
+
+### Use Cases:
+
+- **`std::map` and `std::set`:**
+  - Suitable for applications requiring ordered storage of elements and efficient access based on keys or values, such as associative arrays, dictionaries, or priority queues.
+
+- **`std::unordered_map` and `std::unordered_set`:**
+  - Ideal for scenarios where rapid access to elements based on keys or values is essential, and the order of elements is not significant, such as indexing, caching, or membership testing.
+
+### Conclusion:
+
+- **Use `std::map` and `std::set` when:** Ordered storage of elements and efficient access based on keys or values are required, and memory overhead is manageable.
+- **Use `std::unordered_map` and `std::unordered_set` when:** Rapid access to elements based on keys or values is essential, and the order of elements is not significant, even at the cost of potentially higher memory overhead.
+
+Understanding the specific requirements, performance characteristics, and trade-offs involved in your project will help you choose the most suitable container for your needs.
+Understanding the specific requirements and trade-offs involved in your project will help you choose the most suitable container for your needs.
