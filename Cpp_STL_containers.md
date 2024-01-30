@@ -1,7 +1,3 @@
-as std::array compares with the built-in array []
-
-the std::stack should compare with another signle ended stack which can be built as
-
 tags: std, stl, container
 ---
 
