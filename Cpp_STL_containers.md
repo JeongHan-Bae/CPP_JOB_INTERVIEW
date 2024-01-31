@@ -3,12 +3,11 @@ tags: std, stl, container
 
 # Overview of C++ Standard Library Containers
 
-In addition to the traditional built-in array accessed with square brackets (`[]`), C++ offers a rich collection of containers within the Standard Template Library (**STL**).
-
-These containers provide various data structures with efficient implementations, catering to diverse needs in modern software development. 
-This document explores some of the most commonly used containers available in the C++ STL, highlighting their features, usage, and scenarios where they excel.
+In addition to the traditional built-in array accessed with square brackets (`[]`), C++ offers a rich collection of containers within the Standard Template Library (**STL**). 
+These containers, which are part of the broader C++ Standard Library, provide various data structures with efficient implementations, catering to diverse needs in modern software development. This document explores some of the most commonly used containers available in the C++ STL, highlighting their features, usage, and scenarios where they excel. Let's dive in!
 
 -----
+
 # `<array>`
 
 ## `std::array` Container
@@ -30,6 +29,7 @@ The `std::array` container is a fixed-size array-like container that encapsulate
 
 ```cpp
 #include <array>
+#include <cstring>
 
 // Create a std::array of integers with size 5 (values are undefined)
 std::array<int, 5> intArray;
@@ -47,13 +47,7 @@ std::memset(&intArray[0], 0, intArray.size() * sizeof(int));
 std::array<int, 5> intArray{}; // All elements initialized to 0
 
 // Create a std::array of integers with size 5 (first three elements initialized to -1, -2, -3, rest to 0)
-std::array<int, 5> intArrayNegative = {-1, -2, -3};
-
-// Output elements of intArrayNegative to demonstrate initialization
-for (int j : intArrayNegative) {
-    printf("%d ", j);
-}
-// Output: -1 -2 -3 0 0
+std::array<int, 5> intArrayNegative = {-1, -2, -3}; // Initialized to {-1, -2, -3, 0, 0}
 
 // Create a std::array of user-defined struct (default constructor used for initialization)
 struct MyStruct {
@@ -127,9 +121,11 @@ std::array<T, N + 1> insertElement(const std::array<T, N>& originalArray,
 
 ## Deletion in `std::array`
 
-Deleting elements from a `std::array` involves creating a new array with a smaller size, copying elements from the original array while excluding the element to be deleted. Here's how you can use the `deleteElement` function to delete an element from a `std::array`:
+Deleting elements from a `std::array` involves creating a new array with a smaller size, copying elements from the original array while excluding the element to be deleted. Here's how you can perform deletion using the `deleteElement` function:
 
 ```cpp
+#include <array>
+
 std::array<int, 5> originalArray = {1, 2, 3, 4, 5};
 int index = 2; // Index of the element to delete
 
@@ -140,7 +136,7 @@ auto newArray = deleteElement(originalArray, index);
 ### Time Complexity Analysis:
 - The time complexity of this deletion algorithm is `O(N)` where `N` is the size of the original array. 
 - Copying elements before the deletion point and after the deletion point each require `O(N)` time due to the use of `std::swap_ranges`.
-- Additionally, excluding the element to be deleted takes constant time `O(1)`.
+- Excluding the element to be deleted takes constant time `O(1)`.
 
 ### Space Complexity Analysis:
 - The space complexity of this deletion algorithm is also `O(N)` where `N` is the size of the original array.
@@ -189,6 +185,8 @@ Modifying elements in a `std::array` involves updating the value of an existing 
 
 #### Direct Assignment:
 ```cpp
+#include <array>
+
 std::array<int, 5> dataArray = {1, 2, 3, 4, 5};
 int index = 2; // Index of the element to modify
 int newValue = 10; // New value to assign
@@ -199,6 +197,9 @@ dataArray[index] = newValue;
 
 #### Swap Values:
 ```cpp
+#include <array>
+#include <algorithm>
+
 std::array<int, 5> dataArray = {1, 2, 3, 4, 5};
 int index = 2; // Index of the element to modify
 int newValue = 10; // New value to swap
@@ -219,6 +220,10 @@ Searching for elements in a `std::array` can be efficiently performed using stan
 
 #### Using `std::find` for Finding First Instance:
 ```cpp
+#include <iostream>
+#include <array>
+#include <algorithm>
+
 std::array<int, 5> dataArray = {1, 2, 3, 4, 5};
 int target = 3; // Element to search for
 
@@ -235,6 +240,10 @@ if (iter != dataArray.end()) {
 
 #### Using `std::find_end` for Finding Last Instance:
 ```cpp
+#include <iostream>
+#include <array>
+#include <algorithm>
+
 std::array<int, 5> dataArray = {1, 2, 3, 4, 3};
 int target = 3; // Element to search for
 
@@ -242,14 +251,15 @@ int target = 3; // Element to search for
 auto result = std::find_end(dataArray.begin(), dataArray.end(), &target, &target + 1);
 
 // Check if the element was found
-if (iter != dataArray.end()) {
-    std::cout << "Last occurrence found at index: " << std::distance(dataArray.begin(), iter) << std::endl;
+if (result != dataArray.end()) {
+    std::cout << "Last occurrence found at index: " << std::distance(dataArray.begin(), result) << std::endl;
 } else {
     std::cout << "Element not found" << std::endl;
 }
 ```
+
 #### Note:
-- `std::find_end` can also find the last occurence for a sequence.
+- `std::find_end` can also find the last occurrence for a sequence.
 
 ### Time Complexity Analysis:
 - Both `std::find` and `std::find_end` algorithms have a time complexity of `O(N)` where `N` is the size of the `std::array`. 
@@ -258,12 +268,16 @@ if (iter != dataArray.end()) {
 ### Space Complexity Analysis:
 - Searching in a `std::array` does not incur any additional space overhead beyond the array itself. The space complexity remains constant, denoted as `O(1)`.
 
+  
 ## Sorting in `std::array`
 
 By default, elements in a `std::array` are not sorted. However, you can easily sort the elements using the `std::sort` algorithm provided by the C++ Standard Library.
 `std::sort` offers an efficient way to arrange the elements of the array in ascending order, with a time complexity of `O(N log N)`, where `N` is the size of the array.
 
 ```cpp
+#include <array>
+#include <algorithm>
+
 std::array<int, 5> dataArray = {5, 2, 8, 1, 9};
 
 // Sort the array in ascending order
@@ -272,11 +286,11 @@ std::sort(dataArray.begin(), dataArray.end());
 // Now, the elements in dataArray are sorted: {1, 2, 5, 8, 9}
 ```
 
-- You can apply various sorting algorithms available in the C++ Standard Library to a `std::array`or simply using `std::sort`.
+- You can apply various sorting algorithms available in the C++ Standard Library to a `std::array`, such as `std::stable_sort` for stable sorting or `std::partial_sort` for partial sorting.
 
 ## Comparing `std::array` and Built-in Array (`[]`)
 
-When deciding between `std::array` and the traditional built-in array (`[]`), it's essential to consider factors like initialization, flexibility, safety, and usability. Both types have their advantages and disadvantages, making them suitable for different use cases. Let's compare them across various aspects:
+When deciding between `std::array` and the traditional built-in array (`[]`), it's essential to consider factors like initialization, flexibility, safety, usability, and performance. Let's compare them across various aspects:
 
 ### Initialization:
 - **`std::array`:** Offers convenient initialization methods, such as using `{}` with optional values to initialize all elements or allowing automatic initialization with default values based on the element type.
@@ -291,11 +305,11 @@ When deciding between `std::array` and the traditional built-in array (`[]`), it
 - **Built-in Array (`[]`):** Requires manual bounds checking, increasing the risk of errors if not implemented correctly.
 
 ### Usability:
-- **`std::array`:** Offers a more user-friendly interface with standard library support, making it easier to integrate into modern C++ codebases.
+- **`std::array`:** Offers a more user-friendly interface with standard library support, making it easier to integrate into modern C++ codebases. Compatibility with standard library algorithms simplifies common tasks.
 - **Built-in Array (`[]`):** Requires more manual management and lacks the convenience of standard library features, potentially leading to more verbose code.
 
 ### Performance:
-- **`std::array`:** Typically offers similar performance to built-in arrays while providing additional safety features and standard library functionalities.
+- **`std::array`:** Typically offers similar performance to built-in arrays while providing additional safety features and standard library functionalities. The overhead introduced by safety features is usually negligible in most scenarios.
 - **Built-in Array (`[]`):** Offers raw performance but lacks safety features and standard library support, requiring more manual optimizations and error handling.
 
 ### Conclusion:
@@ -303,20 +317,17 @@ When deciding between `std::array` and the traditional built-in array (`[]`), it
 - **Use built-in array (`[]`) when:** Performance is critical, and low-level memory management or compatibility with legacy code is required. However, be prepared to handle manual bounds checking and potential safety issues.
 
 Understanding the specific requirements and trade-offs involved in your project will help you choose the most suitable array type for your needs.
-
 -----
-
-# `<vector>`
 
 ## `std::vector` Container
 
 The `std::vector` container is a dynamic array-like container that provides resizable arrays with automatic memory management. It offers similar functionalities to built-in arrays and `std::array`, but with the added capability of dynamic resizing, making it suitable for scenarios where the size of the array may change frequently.
 
-### Initialization Behavior:
+## Initialization Behavior:
 
 - **Default Initialization:** When a `std::vector` is default-initialized, it contains zero elements.
 
-- **Initialization with Size:** You can initialize a `std::vector` with a specified size, and all elements will be value-initialized.
+- **Initialization with Size:** You can initialize a `std::vector` with a specified size, and all elements will be value-initialized, meaning numeric types will be initialized to zero, and class types will be initialized using their default constructor.
 
 - **Initialization with Values:** You can initialize a `std::vector` with a specified size and initial values.
 
@@ -340,13 +351,15 @@ std::vector<int> vec3 = {1, 2, 3, 4, 5}; // vec3: {1, 2, 3, 4, 5}
 std::vector<int> vec4(5, -1); // vec4: {-1, -1, -1, -1, -1}
 ```
 
-### Insertion in `std::vector`
+## Insertion in `std::vector`
 
 Inserting elements into a `std::vector` can be done efficiently at the end of the vector or at a specified position. The vector automatically handles resizing as needed to accommodate new elements.
 
 #### Insert at the End:
 
 ```cpp
+#include <vector>
+
 std::vector<int> vec = {1, 2, 3};
 
 // Inserting elements at the end
@@ -368,18 +381,20 @@ vec.insert(vec.begin() + 3, 4); // Insert integer 4 at index 3
 
 ### Time Complexity Analysis:
 - Inserting an element at the end of a `std::vector` using `emplace_back()` has an average time complexity of `O(1)`. However, in cases where the vector needs to be resized, the complexity can become `O(n)`, where `n` is the current number of elements in the vector.
-- Inserting an element at a specified position using `insert()` has an average time complexity of `O(n)`, where `n` is the is number of elements moved.
+- Inserting an element at a specified position using `insert()` has an average time complexity of `O(n)`, where `n` is the number of elements moved due to the insertion.
 
 ### Space Complexity Analysis:
 - The space complexity of inserting elements into a `std::vector` depends on whether the vector needs to be resized. In the worst case, where resizing is required, the space complexity is `O(n)`.
 
-### Deletion in `std::vector`
+## Deletion in `std::vector`
 
 Deleting elements from a `std::vector` can be done efficiently using various methods such as `pop_back()` to remove elements from the end or `erase()` to remove elements at a specified position.
 
 #### Delete from the End:
 
 ```cpp
+#include <vector>
+
 std::vector<int> vec = {1, 2, 3, 4, 5};
 
 // Removing elements from the end
@@ -399,18 +414,20 @@ vec.erase(vec.begin() + 2); // Removes the element at index 2
 
 ### Time Complexity Analysis:
 - Deleting an element from the end of a `std::vector` using `pop_back()` has a time complexity of `O(1)`.
-- Deleting an element from a specified position using `erase()` has a time complexity of `O(n)`, where `n` is length between the end of the range and the end of the container.
+- Deleting an element from a specified position using `erase()` has a time complexity of `O(n)`, where `n` is the number of elements moved due to shifting.
 
 ### Space Complexity Analysis:
 - The space complexity of deleting elements from a `std::vector` is `O(1)` as it does not involve resizing the vector.
 
-### Modification in `std::vector`
+## Modification in `std::vector`
 
 Modifying elements in a `std::vector` involves updating the value of an existing element at a specified index. This operation can be performed efficiently with a time complexity of `O(1)`.
 
 #### Direct Assignment:
 
 ```cpp
+#include <vector>
+
 std::vector<int> vec = {1, 2, 3, 4, 5};
 int index = 2; // Index of the element to modify
 int newValue = 10; // New value to assign
@@ -425,13 +442,17 @@ vec[index] = newValue;
 ### Space Complexity Analysis:
 - Modifying elements in a `std::vector` does not incur any additional space overhead. The space complexity remains constant, denoted as `O(1)`.
 
-### Searching in `std::vector`
+## Searching in `std::vector`
 
 Searching for elements in a `std::vector` can be efficiently performed using standard algorithms provided by the C++ Standard Library, such as `std::find` and `std::find_end`.
 
 #### Using `std::find` for Finding First Instance:
 
 ```cpp
+#include <vector>
+#include <algorithm>
+#include <iostream>
+
 std::vector<int> vec = {1, 2, 3, 4, 5};
 int target = 3; // Element to search for
 
@@ -449,6 +470,10 @@ if (iter != vec.end()) {
 #### Using `std::find_end` for Finding Last Instance:
 
 ```cpp
+#include <vector>
+#include <algorithm>
+#include <iostream>
+
 std::vector<int> vec = {1, 2, 3, 4, 3};
 int target = 3; // Element to search for
 
@@ -457,9 +482,7 @@ auto iter = std::find_end(vec.begin(), vec.end(), &target, &target + 1);
 
 // Check if the element was found
 if (iter != vec.end()) {
-    std::cout << "Last occurrence found at index: " << std::
-
-distance(vec.begin(), iter) << std::endl;
+    std::cout << "Last occurrence found at index: " << std::distance(vec.begin(), iter) << std::endl;
 } else {
     std::cout << "Element not found" << std::endl;
 }
@@ -472,19 +495,31 @@ distance(vec.begin(), iter) << std::endl;
 ### Space Complexity Analysis:
 - Searching in a `std::vector` does not incur any additional space overhead beyond the vector itself. The space complexity remains constant, denoted as `O(1)`.
 
-### Sorting in `std::vector`
+## Sorting in `std::vector`
 
 Sorting elements in a `std::vector` can be efficiently performed using the `std::sort` algorithm provided by the C++ Standard Library.
 
+#### Example:
+
 ```cpp
+#include <vector>
+#include <algorithm>
+
 std::vector<int> vec = {5, 2, 8, 1, 9};
 
 // Sort the vector in ascending order
 std::sort(vec.begin(), vec.end());
 
-// Now, the elements in vec are sorted: {1, 2, 5, 8, 9}
+// Now, the elements in vec are sorted in ascending order: {1, 2, 5, 8, 9}
 ```
-- You can apply various sorting algorithms available in the C++ Standard Library to a `std::vector`, providing flexibility and ease of use.
+
+### Time Complexity Analysis:
+- Sorting a `std::vector` using `std::sort` has an average time complexity of `O(n log n)`, where `n` is the number of elements in the vector.
+
+### Note:
+- You can choose different sorting orders, such as descending, or provide custom comparison functions to `std::sort` for more specialized sorting requirements.
+
+By utilizing `std::sort`, you can easily organize the elements within a `std::vector` according to your desired criteria.
 
 ## Comparing `std::vector` and `std::array`
 
@@ -516,17 +551,14 @@ Understanding the specific requirements and trade-offs involved in your project 
 
 -----
 
-# `<stack>`
-
 ## `std::stack` Container
 
-The `std::stack` container is a container adapter that provides a LIFO (Last-In-First-Out) data structure, where elements are inserted and removed from the same end known as the top.
-It is implemented as an adapter over other standard container classes, such as `std::deque`, `std::list`, or `std::vector`, by default using `std::deque`.
+The `std::stack` container in C++ provides a LIFO (Last-In-First-Out) data structure, where elements are inserted and removed from the same end known as the top. It is implemented as an adapter over other standard container classes, such as `std::deque`, `std::list`, or `std::vector`, with `std::deque` being the default.
 
 ### Single-Ended Stack:
-`std::stack` is a single-ended stack, meaning that elements can only be inserted or removed from one end, which is the top of the stack.
-### Initialization Behavior:
+`std::stack` operates as a single-ended stack, meaning that elements can only be inserted or removed from one end, which is the top of the stack.
 
+### Initialization:
 - **Default Initialization:** When a `std::stack` is default-initialized, it is empty, containing no elements.
 
 ### Example:
@@ -537,6 +569,10 @@ It is implemented as an adapter over other standard container classes, such as `
 // Default initialization of a std::stack of integers
 std::stack<int> intStack; // Creates an empty stack
 ```
+
+With this initialization, `intStack` is created as an empty stack ready to hold integers.
+
+The `std::stack` container is particularly useful in scenarios where you need a last-in-first-out (LIFO) data structure, such as managing function call stacks or undo/redo functionality.
 
 ## Insertion in `std::stack`
 
