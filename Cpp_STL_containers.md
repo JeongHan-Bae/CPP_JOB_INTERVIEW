@@ -317,6 +317,7 @@ When deciding between `std::array` and the traditional built-in array (`[]`), it
 - **Use built-in array (`[]`) when:** Performance is critical, and low-level memory management or compatibility with legacy code is required. However, be prepared to handle manual bounds checking and potential safety issues.
 
 Understanding the specific requirements and trade-offs involved in your project will help you choose the most suitable array type for your needs.
+
 -----
 
 ## `std::vector` Container
