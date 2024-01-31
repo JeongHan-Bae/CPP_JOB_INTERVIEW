@@ -320,6 +320,8 @@ Understanding the specific requirements and trade-offs involved in your project 
 
 -----
 
+# `<vector>`
+
 ## `std::vector` Container
 
 The `std::vector` container is a dynamic array-like container that provides resizable arrays with automatic memory management. It offers similar functionalities to built-in arrays and `std::array`, but with the added capability of dynamic resizing, making it suitable for scenarios where the size of the array may change frequently.
@@ -551,6 +553,8 @@ By utilizing `std::sort`, you can easily organize the elements within a `std::ve
 Understanding the specific requirements and trade-offs involved in your project will help you choose the most suitable container type (`std::vector` or `std::array`) for your needs.
 
 -----
+
+# `<stack>`
 
 ## `std::stack` Container
 
