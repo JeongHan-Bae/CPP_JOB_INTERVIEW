@@ -538,8 +538,6 @@ It is implemented as an adapter over other standard container classes, such as `
 std::stack<int> intStack; // Creates an empty stack
 ```
 
-Here's the rewritten part:
-
 ## Insertion in `std::stack`
 
 Inserting an element into a specific position in a `std::stack` is not directly supported by its interface.
@@ -728,6 +726,7 @@ void ModifyElement(std::stack<T>& stack, size_t position, const T& element) {
 ```
 
 This function effectively modifies the element at the specified position within the `std::stack`, ensuring that the stack's LIFO (Last-In-First-Out) property is maintained.
+
 ## Searching in `std::stack`
 
 Searching for an element at a specific position in a `std::stack` is not directly supported by its interface. However, you can create a custom function, `searchElement`, which creates a temporary stack to hold elements while searching for the desired element at the specified position.
@@ -948,6 +947,251 @@ However, they differ in their implementations, features, and performance charact
   - Users are comfortable managing memory and resizing operations explicitly.
 
 Both `std::stack` and `std::vector` offer LIFO behavior, but the choice depends on the specific requirements, performance considerations, and ease of use within the context of the application.
+
+-----
+
+# `<deque>`
+
+## `std::deque` Container
+
+The `<deque>` (double-ended queue) container in C++ provides a dynamic array-like data structure that supports efficient insertion and deletion at both ends. It allows for constant time insertion and deletion at either end of the sequence, making it suitable for scenarios where elements need to be efficiently added or removed from the front or back of the container.
+
+### Initialization:
+
+`std::deque` can be initialized in several ways:
+
+- **Default Initialization:** A default-initialized `std::deque` is empty, containing no elements.
+
+- **Initialization with Size:** You can initialize a `std::deque` with a specified size, creating a container with a certain number of default-initialized elements.
+
+- **Initialization with Range:** You can initialize a `std::deque` with elements from a specified range, such as another container or an initializer list.
+
+### Example:
+
+```cpp
+#include <deque>
+
+// Default initialization of a std::deque
+std::deque<int> deque1; // Creates an empty deque
+
+// Initialization with size
+std::deque<int> deque2(5); // Creates a deque with 5 default-initialized elements
+
+// Initialization with range
+std::deque<int> deque3 {1, 2, 3, 4, 5}; // Creates a deque with elements from the initializer list
+```
+
+## Insertion in `std::deque`
+
+### Using Built-In Functions for Insertion at the Front and Back:
+- `emplace_front` for insertion at the front with a time complexity of O(1):
+  ```cpp
+  myDeque.emplace_front(10);
+  ```
+
+- `emplace_back` for insertion at the back with a time complexity of O(1):
+  ```cpp
+  myDeque.emplace_back(50);
+  ```
+
+### Using `insert` for Custom Position Insertion:
+- `insert` for insertion at a custom position with a time complexity of O(n):
+  ```cpp
+  myDeque.insert(myDeque.begin() + 2, 25);
+  ```
+  
+### Time Complexity Analysis:
+- Time Complexity: `O(1)` for insertion at the front and back, `O(n)` for insertion at a custom position.
+  - Insertion at the front and back using `emplace_front` and `emplace_back` functions has a constant time complexity because these operations directly add elements to the respective ends of the deque in constant time.
+  - However, insertion at a custom position using the `insert` function requires shifting elements to accommodate the new element, resulting in a linear time complexity proportional to the number of elements in the deque.
+
+### Space Complexity Analysis:
+- Space Complexity: `O(1)` for insertion at the front and back, `O(n)` for insertion at a custom position.
+  - Insertion at the front and back using `emplace_front` and `emplace_back` functions does not incur any additional space overhead beyond the deque itself. It simply adds elements to the beginning or end of the deque.
+  - Insertion at a custom position using the `insert` function may require temporary space to hold elements while rearranging them, resulting in a space complexity linearly proportional to the number of elements in the deque. Therefore, the space complexity for custom position insertion is O(n).
+
+## Deletion in `std::deque`
+
+### Using Built-In Functions for Deletion at the Front and Back:
+- `pop_front` for deletion at the front with a time complexity of O(1):
+  ```cpp
+  myDeque.pop_front();
+  ```
+
+- `pop_back` for deletion at the back with a time complexity of O(1):
+  ```cpp
+  myDeque.pop_back();
+  ```
+
+### Using `erase` for Custom Position Deletion:
+- `erase` for deletion at a custom position with a time complexity of O(n):
+  ```cpp
+  myDeque.erase(myDeque.begin() + 2);
+  ```
+
+### Time Complexity Analysis:
+- Time Complexity: `O(n)` for custom deletion, `O(1)` for deletion at the front and back.
+  - When using `erase` for custom deletion, the time complexity is linear, directly proportional to the number of elements in the deque. However, deletion at the front and back with `pop_front` and `pop_back` has a constant time complexity.
+
+### Space Complexity Analysis:
+- Space Complexity: `O(1)` for deletion at the front and back, `O(n)` for custom deletion.
+  - The space complexity of `erase` for custom deletion is linear, as it may create temporary space to hold elements while rearranging them. However, deletion at the front and back with `pop_front` and `pop_back` does not incur additional space overhead beyond the deque itself.
+## Performance Characteristics
+
+`std::deque` provides efficient performance for insertion and deletion at both ends of the sequence, typically with constant time complexity (`O(1)`). This makes it suitable for scenarios where frequent insertion and deletion operations are required at the front and back of the container.
+
+### Modification in `std::deque`
+
+Modifying an element in a `std::deque` can be efficiently done using the subscript operator `[]` or the `at()` function to access and modify elements directly.
+
+#### Using Built-In Functions for Modification at the Front and Back:
+- Modifying elements at the front and back of a `std::deque` can be achieved using `emplace_front()` and `emplace_back()` functions, respectively. These operations have a time complexity of `O(1)`.
+
+#### Example:
+```cpp
+std::deque<int> myDeque = {10, 20, 30, 40, 50};
+
+// Modify the first and last elements
+myDeque.front() = 5;
+myDeque.back() = 55;
+```
+
+#### Using Built-In Functions for Modification at Custom Position:
+- Modification at a custom position is done using the subscript operator `[]` or the `at()` function to access the element at the desired position and then assigning the new value. This operation has a time complexity of `O(1)`.
+
+#### Example:
+```cpp
+std::deque<int> myDeque = {10, 20, 30, 40, 50};
+
+// Modify the element at index 2
+myDeque[2] = 25;
+```
+
+### Time Complexity Analysis:
+- Time Complexity: `O(1)` for modification at the front and back, `O(1)` for modification at a custom position.
+  - Modifying elements at the front and back using `emplace_front()` and `emplace_back()` functions has a constant time complexity because these operations directly access and modify the respective ends of the deque in constant time.
+  - Similarly, modifying an element at a custom position using the subscript operator `[]` or the `at()` function also has a constant time complexity, as it directly accesses and modifies the element at the specified position.
+
+### Space Complexity Analysis:
+- Space Complexity: `O(1)`
+  - Modification operations in a `std::deque` do not incur any additional space overhead beyond the deque itself. Therefore, the space complexity remains constant.
+ 
+### Searching in `std::deque`
+
+Similar to `std::vector`, searching for elements in a `std::deque` can also be efficiently performed using standard algorithms provided by the C++ Standard Library, such as `std::find` and `std::find_end`.
+
+#### Using `std::find` for Finding First Instance:
+
+```cpp
+#include <deque>
+#include <algorithm>
+
+std::deque<int> myDeque = {10, 20, 30, 40, 50};
+int target = 30; // Element to search for
+
+// Find the first occurrence of the target element in the deque
+auto iter = std::find(myDeque.begin(), myDeque.end(), target);
+
+// Check if the element was found
+if (iter != myDeque.end()) {
+    // Element found
+} else {
+    // Element not found
+}
+```
+
+### Time Complexity Analysis:
+- The time complexity of searching in a `std::deque` using `std::find` is `O(n)`, where `n` is the number of elements in the deque. 
+- The `std::find` algorithm linearly searches through the elements of the `std::deque` until it finds the desired value or reaches the end.
+
+### Space Complexity Analysis:
+- Searching in a `std::deque` using `std::find` does not incur any additional space overhead beyond the iterator used for traversal. Therefore, the space complexity remains constant, denoted as `O(1)`.
+
+
+### Sorting in `std::deque`
+
+Sorting elements in a `std::deque` can also be efficiently performed using the `std::sort` algorithm provided by the C++ Standard Library.
+
+```cpp
+#include <deque>
+#include <algorithm>
+
+std::deque<int> myDeque = {5, 2, 8, 1, 9};
+
+// Sort the deque in ascending order
+std::sort(myDeque.begin(), myDeque.end());
+
+// Now, the elements in myDeque are sorted: {1, 2, 5, 8, 9}
+```
+
+- Similar to `std::vector`, you can apply various sorting algorithms available in the C++ Standard Library to a `std::deque`, providing flexibility and ease of use.
+
+### Comparing `std::deque` and `std::stack` for LIFO Behavior
+
+When considering a LIFO (Last-In-First-Out) data structure in C++, both `std::deque` (double-ended queue) and `std::stack` can serve the purpose. However, they differ in their implementations, features, and performance characteristics. Let's compare them across various aspects:
+
+### Implementation:
+- **`std::deque`:** It's a versatile container that provides efficient insertion and deletion at both ends. It's implemented as a sequence of individual blocks, allowing fast insertions and deletions.
+- **`std::stack`:** It's a container adapter provided by the C++ Standard Library, typically using other standard containers like `std::deque`, `std::list`, or `std::vector` internally. The default underlying container is `std::deque`, but users can choose other containers based on their requirements.
+
+### Usability:
+- **`std::deque`:** Offers a general-purpose interface for double-ended queue operations, including methods like `push_front`/`emplace_front`, `push_back`/`emplace_back`, `pop_front`, and `pop_back`. It provides flexibility for various data storage needs beyond LIFO behavior.
+- **`std::stack`:** Provides a specialized interface tailored specifically for stack operations, abstracting away the underlying container details. It offers methods like `push`/`emplace`, `pop`, and `top`, making it easier to work with LIFO behavior.
+
+### Performance:
+- **`std::deque`:** Offers efficient performance for LIFO behavior due to its optimized implementation for insertion and deletion at both ends. It provides constant-time complexity for `push_front`/`emplace_front`, `push_back`/`emplace_back`, `pop_front`, and `pop_back` operations.
+- **`std::stack`:** Provides efficient performance for stack operations, leveraging optimizations from the underlying container implementation (e.g., `std::deque`). However, the choice of the underlying container can impact performance.
+
+### Safety:
+- **`std::deque`:** Ensures safety features such as bounds checking and exception handling during element access and modification, providing robustness and preventing common errors.
+- **`std::stack`:** Offers safety features inherited from the underlying container type (e.g., `std::deque`), ensuring safe stack operations. Users need to handle exceptions and ensure proper error handling.
+
+### Flexibility:
+- **`std::deque`:** Provides flexibility for various data storage needs beyond LIFO behavior, supporting random access and efficient insertion/deletion at both ends. Users can choose different container adapters based on performance and memory requirements.
+- **`std::stack`:** Offers a specialized interface for stack operations, limiting flexibility to LIFO behavior. However, users can choose the underlying container type (e.g., `std::deque`, `std::list`, `std::vector`) to tailor the implementation based on specific requirements.
+
+### Conclusion:
+- **Use `std::deque` when:** 
+  - Versatility and efficiency for double-ended queue operations are required.
+  - Constant-time complexity for insertion and deletion at both ends is crucial.
+  - Random access and flexibility for various data storage needs are desired.
+
+- **Use `std::stack` when:** 
+  - Specialized stack behavior with a clean and intuitive interface is needed.
+  - Performance optimizations specific to stack operations are necessary.
+  - Compatibility with other standard library components and ease of use are priorities.
+
+Both `std::deque` and `std::stack` offer LIFO behavior, but the choice depends on the specific requirements, performance considerations, and flexibility within the context of the application.
+
+### Comparing `std::deque` and `std::vector`
+
+When comparing `std::deque` (double-ended queue) and `std::vector` in C++, they both serve as sequence containers, but they differ in their characteristics, features, and usage scenarios. Let's compare them across various aspects:
+
+### Initialization:
+- **`std::deque`:** Offers dynamic resizing and efficient insertion and deletion at both ends, allowing flexible initialization with variable sizes and values.
+- **`std::vector`:** Provides dynamic resizing with automatic memory management, enabling flexible initialization with variable sizes and values, similar to `std::deque`.
+
+### Flexibility:
+- **`std::deque`:** Provides efficient insertion and deletion at both ends, making it suitable for scenarios where elements are frequently added or removed from the front or back of the container.
+- **`std::vector`:** Offers dynamic resizing and efficient insertion and deletion at the end (`emplace_back`, `pop_back`), but less efficient for operations involving elements at the front due to potential reallocation of memory.
+
+### Safety:
+- **`std::deque`:** Ensures safety features such as bounds checking during access and modification, reducing the risk of buffer overflows or memory corruption.
+- **`std::vector`:** Provides automatic bounds checking during access and resizing, enhancing safety by preventing out-of-bounds access or memory corruption.
+
+### Usability:
+- **`std::deque`:** Offers a general-purpose interface for double-ended queue operations, including methods like `push_front`/`emplace_front`, `push_back`/`emplace_back`, `pop_front`, and `pop_back`.
+- **`std::vector`:** Provides a more user-friendly interface with standard library support for common operations like insertion, deletion, sorting, and dynamic resizing (`emplace_back`, `pop_back`).
+
+### Performance:
+- **`std::deque`:** Provides efficient performance for insertion and deletion at both ends with constant time complexity (`O(1)`), making it suitable for scenarios where elements are frequently added or removed from the front or back.
+- **`std::vector`:** Offers efficient performance for dynamic resizing with amortized constant time complexity (`O(1)`) for adding or removing elements at the end (`emplace_back`, `pop_back`). However, reallocation of memory during resizing can incur occasional performance overhead.
+
+### Conclusion:
+- **Use `std::deque` when:** Efficient insertion and deletion at both ends (`push_front`/`emplace_front`, `pop_front`, `push_back`/`emplace_back`, `pop_back`) are required, or when flexibility in container size and efficient dynamic resizing are essential.
+- **Use `std::vector` when:** Dynamic resizing, automatic memory management, or a more user-friendly interface with support for common operations like insertion, deletion, sorting, and dynamic resizing (`emplace_back`, `pop_back`) are needed, and performance is optimized for operations at the end of the container.
+
+Understanding the specific requirements and performance characteristics of your application will help you choose the most suitable container type (`std::deque` or `std::vector`) for your needs.
 
 -----
 
